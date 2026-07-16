@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Ballot, Explained</title>
+<meta name="description" content="Understand every office on your ballot — what it controls and how much it affects your daily life. Nonpartisan and free.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yourballotexplained.com/ballot-explained-tool.html">
+<meta property="og:title" content="Your Ballot, Explained — the tool">
+<meta property="og:description" content="Understand every office on your ballot and how much it affects your life. Nonpartisan and free.">
+<meta property="og:image" content="https://yourballotexplained.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://yourballotexplained.com/og-image.png">
+<style>
+  :root{
+    --navy:#14213A; --blue:#2563C9; --coral:#F0503F;
+    --ink:#1B2536; --muted:#5B6472; --line:#E4E7EC; --light:#F5F7FA;
+    --bluesoft:#E7EEFB; --coralsoft:#FCE6E2; --paper:#FFFFFF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#EEF0F4;line-height:1.5;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:840px;margin:0 auto;padding:0 16px 64px;}
+  a{color:var(--blue);}
+
+  header{background:var(--navy);color:#fff;padding:32px 22px 28px;border-radius:0 0 16px 16px;position:relative;overflow:hidden;}
+  header .c{position:absolute;width:240px;height:240px;border-radius:50%;background:rgba(240,80,63,.13);top:-120px;right:-55px;}
+  header .badge{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--coral);background:rgba(240,80,63,.14);padding:5px 12px;border-radius:22px;margin-bottom:14px;position:relative;}
+  header h1{font-size:33px;font-weight:800;letter-spacing:-.02em;line-height:1.05;position:relative;}
+  header p{color:#C9D2E1;font-size:15.5px;margin-top:9px;max-width:94%;position:relative;}
+
+  .step-label{display:flex;align-items:center;gap:11px;margin:26px 0 12px;}
+  .step-label .num{width:30px;height:30px;border-radius:50%;background:var(--coral);color:#fff;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .step-label h2{font-size:20px;font-weight:800;letter-spacing:-.01em;}
+  .step-label .sub{font-size:13px;color:var(--muted);}
+
+  /* Step 1 — ballot lookup */
+  .lookup{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:0 2px 10px rgba(20,22,26,.05);}
+  .lookup p.intro{font-size:14.5px;color:#33363B;margin-bottom:16px;}
+  .lookup p.intro b{color:var(--ink);}
+  .lookup .or{text-align:center;font-size:12px;color:#9AA3B0;text-transform:uppercase;letter-spacing:.08em;margin:14px 0;}
+  .bigbtn{display:block;text-align:center;background:var(--coral);color:#fff;font-size:16px;font-weight:700;text-decoration:none;padding:15px;border-radius:12px;}
+  .bigbtn:hover{opacity:.94;}
+  .note{font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.45;}
+  .note b{color:var(--ink);}
+
+  .lookrow{display:flex;flex-direction:column;gap:10px;}
+  .minibtn{display:block;text-align:center;background:var(--light);color:var(--navy);font-size:14px;font-weight:700;text-decoration:none;padding:12px;border-radius:12px;border:1px solid var(--line);}
+  .minibtn:hover{background:#EDEFF3;}
+  /* accuracy strip */
+  .accuracy{background:var(--bluesoft);border:1px solid #CBDBF7;border-radius:12px;padding:14px 16px;margin-top:16px;font-size:13px;color:#1e3a5f;}
+  .accuracy b{color:var(--ink);}
+
+  /* Step 2 — explainer */
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 6px;}
+  .filters button{font:inherit;font-size:12.5px;font-weight:600;color:var(--muted);background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:6px 14px;cursor:pointer;}
+  .filters button.on{background:var(--navy);color:#fff;border-color:var(--navy);}
+  .count{font-size:12px;color:var(--muted);margin:4px 2px 14px;}
+
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:12px;margin-bottom:11px;overflow:hidden;box-shadow:0 1px 3px rgba(20,22,26,.05);}
+  .head{padding:15px 18px;cursor:pointer;display:flex;gap:13px;align-items:center;}
+  .head:hover{background:#FAFBFC;}
+  .lvl{font-size:9.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:5px;flex:0 0 auto;}
+  .lvl.federal{background:#E4EAF3;color:#1E3A5F;}
+  .lvl.state{background:#F6ECD9;color:#8A5A05;}
+  .lvl.county{background:#E1F0E5;color:#166534;}
+  .lvl.local{background:#EEE7FB;color:#6D28D9;}
+  .lvl.courts{background:#FCE6E2;color:#9B2C22;}
+  .lvl.measure{background:#E7EEFB;color:#1E40AF;}
+  .htitle{flex:1;min-width:0;}
+  .htitle .nm{font-size:16px;font-weight:700;color:var(--ink);line-height:1.2;}
+  .htitle .sub{font-size:11.5px;color:var(--muted);margin-top:2px;}
+  .impact{flex:0 0 auto;text-align:center;width:52px;}
+  .impact .n{font-size:21px;font-weight:800;color:var(--ink);line-height:1;}
+  .impact .bar{height:5px;background:var(--light);border-radius:3px;overflow:hidden;margin-top:4px;}
+  .impact .bar i{display:block;height:100%;background:var(--coral);}
+  .impact .lb{font-size:7.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-top:3px;}
+  .chev{flex:0 0 auto;color:#AEB6C2;font-size:18px;transition:transform .2s;}
+  .card.open .chev{transform:rotate(90deg);}
+
+  .body{display:none;padding:0 18px 17px;border-top:1px solid var(--line);}
+  .card.open .body{display:block;}
+  .sec{margin-top:14px;}
+  .sec h4{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+  .does{font-size:14px;color:#33363B;}
+  .why{font-size:11.5px;color:var(--muted);font-style:italic;margin-top:8px;background:var(--light);border-radius:8px;padding:8px 11px;}
+  .runlink{display:inline-block;margin-top:10px;font-size:13px;font-weight:700;color:var(--blue);text-decoration:none;}
+  .runlink:hover{text-decoration:underline;}
+
+  .tipnudge{text-align:center;font-size:14px;color:var(--muted);margin:28px 0 2px;}
+  .tipnudge a{color:var(--coral);font-weight:700;text-decoration:none;}
+  .tipnudge a:hover{text-decoration:underline;}
+  footer{margin-top:30px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:20px;}
+  footer h3{font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--ink);margin-bottom:7px;}
+  footer p{font-size:12px;color:var(--muted);margin-bottom:12px;}
+  footer b{color:var(--ink);}
+  .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;}
+  .cta a{font-size:13px;font-weight:700;text-decoration:none;padding:9px 16px;border-radius:22px;}
+  .cta .follow{background:var(--navy);color:#fff;}
+  .cta .tip{background:var(--coral);color:#fff;}
+  .src{font-size:10px;color:#9AA3B0;margin-top:14px;line-height:1.4;font-style:italic;}
+
+  @media (max-width:560px){header h1{font-size:27px;} .step-label h2{font-size:18px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="c"></div>
+    <div class="badge">Nonpartisan · Free · Fact-based</div>
+    <h1>Your Ballot, Explained</h1>
+    <p>Two steps: pull up your real, official ballot — then finally understand what every office on it actually does, and how much it touches your life.</p>
+  </header>
+
+  <!-- STEP 1 -->
+  <div class="step-label"><span class="num">1</span><div><h2>See your exact ballot</h2><div class="sub">Your real races &amp; candidates, straight from the source</div></div></div>
+
+  <div class="lookup">
+    <p class="intro">Enter your address and you'll get <b>your</b> ballot — every race, every candidate, current for where you live. <b>We don't store anything.</b></p>
+
+<div class="lookrow">
+      <a class="bigbtn" href="https://www.vote411.org" target="_blank" rel="noopener">Look up my exact ballot on Vote411 →</a>
+      <a class="minibtn" href="https://www.usa.gov/local-elections-office" target="_blank" rel="noopener">Find my county elections office →</a>
+    </div>
+
+    <div class="note"><b>Why send you to Vote411?</b> Because being accurate for your exact address is their whole job. Ballot depth varies by county, so if your full ballot isn't there, your <b>county elections office</b> (button above) is the final word. This tool never guesses your ballot for you — it routes you to the source.</div>
+  </div>
+
+  <div class="accuracy"><b>How this stays 100% accurate:</b> your specific races and candidates come straight from official election sources — always current, never stored, never guessed here. The explanations below cover what each office <i>does</i> — that part is the same across the country, so it's evergreen and reliable.</div>
+
+  <!-- STEP 2 -->
+  <div class="step-label"><span class="num">2</span><div><h2>Understand what you're voting for</h2><div class="sub">What each office actually controls — and how much it hits your life</div></div></div>
+
+  <div class="filters" id="filters"></div>
+  <div class="count" id="count"></div>
+  <div id="list"></div>
+
+  <p class="tipnudge">Was this helpful? <a href="https://ko-fi.com/ksmithcredit" target="_blank" rel="noopener">☕ Tip to keep it free →</a></p>
+
+  <footer>
+    <h3>How the impact score works</h3>
+    <p>It's <b>a framework, not a fact</b> — each office scored 0–100 on three things you can check yourself: <b>proximity</b> (does it hit your street, taxes, or family), <b>frequency</b> (how often you feel it), and <b>control</b> (one officeholder vs. one vote among many). Use it as a lens, then decide for yourself. It rates the office — never the candidates.</p>
+    <h3>A note on offices</h3>
+    <p>Not every state or county elects every office listed here, and some go by slightly different names (a "county commissioner" may be a "supervisor," etc.). Your Step 1 lookup shows the exact offices on <i>your</i> ballot.</p>
+    <div class="cta">
+      <a class="follow" href="https://www.threads.com/@ksmithcredit" target="_blank" rel="noopener">Follow @ksmithcredit →</a>
+      <a class="tip" href="https://ko-fi.com/ksmithcredit" target="_blank" rel="noopener">☕ Support this free tool</a>
+    </div>
+    <div class="src">Ballot lookups powered by official election sources via the Voting Information Project / Vote411. Office descriptions are general civic information; impact scores are the author's interpretive framework. Always verify your ballot and registration at Vote411.org. Last updated: July 2026.</div>
+  </footer>
+</div>
+
+<script>
+// ---------- UNIVERSAL OFFICE DATA (evergreen — same roles nationwide) ----------
+// impact 0-100 rates the OFFICE, not any candidate.
+const DATA = [
+  {level:"federal", office:"President & Vice President", note:"Every 4 years", impact:58,
+    does:"Runs the executive branch, commands the military, sets foreign policy, signs or vetoes federal laws, and nominates federal judges. Enormous power — but mostly national and indirect in your daily life."},
+  {level:"federal", office:"U.S. Senator", note:"2 per state · 6-year terms", impact:62,
+    does:"Votes on all federal law, confirms Supreme Court justices and federal judges, approves treaties and top officials, and shapes national taxes and spending."},
+  {level:"federal", office:"U.S. Representative", note:"Your U.S. House district", impact:66,
+    does:"Writes federal law and the national budget (spending bills start in the House). Their office also helps you deal with federal agencies — Social Security, the VA, passports, immigration."},
+
+  {level:"state", office:"Governor", note:"Statewide", impact:76,
+    does:"The state's chief executive. Signs or vetoes state laws, sets budget priorities, appoints agency heads and boards, commands the National Guard, and leads disaster response."},
+  {level:"state", office:"Lieutenant Governor", note:"Statewide", impact:64,
+    does:"Next in line to the governor. In some states, also runs the state senate and decides which bills get heard — which can make it one of the most powerful offices in the state."},
+  {level:"state", office:"State Attorney General", note:"Statewide (where elected)", impact:66,
+    does:"The state's top lawyer. Sues and defends the state in court, issues legal opinions, and enforces consumer-protection and civil-rights laws."},
+  {level:"state", office:"Secretary of State", note:"Statewide (where elected)", impact:56,
+    does:"In many states, the chief elections officer — oversees voter rolls, election administration, and business filings. Directly shapes how you register and vote."},
+  {level:"state", office:"Treasurer / Comptroller", note:"Statewide (where elected)", impact:50,
+    does:"The state's banker and money-watcher. Manages state funds, and in some states certifies how much money the state actually has to spend."},
+  {level:"state", office:"Utility / Railroad / Corporation Commissioner", note:"Statewide (some states)", impact:54,
+    does:"Regulates energy, utilities, and (in some states) oil, gas, and pipelines. Quietly influences your electric and gas bills and local environmental safety."},
+  {level:"state", office:"State Senator", note:"Your state senate district", impact:78,
+    does:"Writes state law and the state budget in the upper chamber — schools, health care, roads, criminal justice, and your property and income taxes."},
+  {level:"state", office:"State Representative / Assembly Member", note:"Your state house district", impact:80,
+    does:"Writes state law and the budget in the lower chamber (spending bills often start here). Your closest state-level lawmaker — big reach into everyday life."},
+  {level:"state", office:"State Board of Education", note:"Your SBOE district (where elected)", impact:55,
+    does:"Sets what public schools are required to teach, approves textbooks and standards, and oversees large education funds."},
+
+  {level:"county", office:"County Commissioner / Supervisor", note:"Your county district", impact:80,
+    does:"Sits on the board that runs your county — sets the county budget and tax rate and maintains roads, bridges, parks, and local services where you live."},
+  {level:"county", office:"County Executive / Judge", note:"Countywide (role varies)", impact:74,
+    does:"The county's top administrator (in many places, an executive role — not a courtroom judge). Leads the county budget and emergency management."},
+  {level:"county", office:"Sheriff", note:"Countywide", impact:68,
+    does:"Runs the county jail, provides law enforcement in unincorporated areas, secures the courts, and serves warrants and legal papers."},
+  {level:"county", office:"District Attorney / Prosecutor", note:"Countywide", impact:74,
+    does:"The chief prosecutor. Decides which criminal cases get charged and how — enormous influence over local criminal justice and public safety."},
+  {level:"county", office:"Assessor", note:"Countywide (where elected)", impact:62,
+    does:"Sets the assessed value of your home and property — which directly drives how big your property-tax bill is."},
+  {level:"county", office:"County Clerk / Recorder", note:"Countywide (where elected)", impact:54,
+    does:"Keeps the public records that run your life on paper — deeds, marriage licenses, birth and death certificates — and often helps run elections."},
+
+  {level:"local", office:"Mayor", note:"Your city or town", impact:68,
+    does:"Leads city government and sets the agenda. Power varies a lot — in some cities the mayor runs everything; in others they're one vote and a city manager runs operations."},
+  {level:"local", office:"City / Town Council", note:"Your city or council district", impact:88,
+    does:"Controls the city budget, zoning, streets, police and fire funding, permits, and trash — the services you touch every single day. One of the highest-impact seats there is."},
+  {level:"local", office:"School Board", note:"Your school district", impact:85,
+    does:"Sets your school district's budget and tax rate, hires the superintendent, and sets local school policy. Big effect on your schools and property taxes."},
+  {level:"local", office:"Community College Board", note:"Your college district (where elected)", impact:46,
+    does:"Governs the local community college system and sets its tuition and tax rate."},
+
+  {level:"courts", office:"Judges — Appellate & Trial Courts", note:"State/local (where elected)", impact:64,
+    does:"Decide real cases: lawsuits, felonies, family and custody, wills, and appeals. In many states you elect these judges — the people most likely to affect you directly if you ever end up in court."},
+  {level:"courts", office:"Justice of the Peace / Local Judge", note:"Your precinct (where elected)", impact:64,
+    does:"Handles the cases most people actually hit: small claims, evictions, traffic tickets, and minor disputes."},
+
+  {level:"measure", office:"Ballot Measures & Propositions", note:"On many ballots", impact:72,
+    does:"Laws, constitutional amendments, bond issues, and tax changes you get to vote on directly — no politician in between. Read these carefully; they can reshape your taxes and rights in one vote."}
+];
+// ---------- END DATA ----------
+
+const LEVELS = [["all","All"],["federal","Federal"],["state","State"],["county","County"],["local","Local"],["courts","Courts"]];
+const list=document.getElementById('list'), filters=document.getElementById('filters'), countEl=document.getElementById('count');
+let active="all";
+LEVELS.forEach(([k,label])=>{const b=document.createElement('button');b.textContent=label;if(k==="all")b.classList.add('on');
+  b.onclick=()=>{active=k;[...filters.children].forEach(c=>c.classList.remove('on'));b.classList.add('on');render();};filters.appendChild(b);});
+
+function render(){
+  const rows=DATA.filter(o=>active==="all"||o.level===active);
+  countEl.textContent=rows.length+" offices"+(active!=="all"?" · "+active:"");
+  list.innerHTML="";
+  rows.forEach(o=>{
+    const card=document.createElement('div');card.className="card";
+    card.innerHTML=`
+      <div class="head">
+        <span class="lvl ${o.level}">${o.level==="measure"?"direct":o.level}</span>
+        <div class="htitle"><div class="nm">${o.office}</div><div class="sub">${o.note}</div></div>
+        <div class="impact"><div class="n">${o.impact}</div><div class="bar"><i style="width:${o.impact}%"></i></div><div class="lb">impact</div></div>
+        <span class="chev">›</span>
+      </div>
+      <div class="body">
+        <div class="sec"><h4>What this controls</h4><div class="does">${o.does}</div>
+          <div class="why">Impact ${o.impact}/100 — the author's framework, scored on proximity, frequency &amp; control. It rates the office, not the candidates.</div></div>
+        <div class="sec"><h4>Who's running for this?</h4>
+          <a class="runlink" href="https://www.vote411.org" target="_blank" rel="noopener">See the candidates on your ballot → Vote411</a></div>
+      </div>`;
+    card.querySelector('.head').onclick=()=>card.classList.toggle('open');
+    list.appendChild(card);
+  });
+}
+render();
+</script>
+</body>
+</html>

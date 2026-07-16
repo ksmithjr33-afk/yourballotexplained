@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/home.html" }
+  ],
+  "functions": {
+    "api/generate.js": { "maxDuration": 60 }
+  }
+}
