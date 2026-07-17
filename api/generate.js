@@ -1,27 +1,29 @@
 // api/generate.js  —  Vercel serverless function (CommonJS)
 // Reads ballot screenshots with the Claude API, uses web search to find who's running,
-// and returns a structured "Your Ballot, Explained" guide.
+// adds the statewide races that district-based views leave out, and returns a structured guide.
 // API key comes from the ANTHROPIC_API_KEY environment variable (set in Vercel settings).
 
-const PROMPT = `You are looking at one or MORE screenshots that together make up a SINGLE voter's official ballot or ballot-lookup results (from Vote411 or a county elections site). The voter may have scrolled and captured different sections, so combine all images into ONE complete guide. Do not duplicate an office that appears in more than one screenshot.
+const PROMPT = `You are looking at one or MORE screenshots that together make up a SINGLE voter's official ballot or ballot-lookup results (often the Vote411 "Show Districts" view, which lists the voter's DISTRICTS). Combine all images into ONE complete guide. Do not duplicate an office that appears in more than one screenshot.
 
-STEP 1 — Read the ballot. Identify every office/district shown and the voter's location (state, county, city, district numbers).
+STEP 1 — Read the screenshots. Identify the voter's STATE, county, city, and every district shown (city council district, school board / ISD district, county commissioner precinct, JP/constable precinct, state house & senate districts, U.S. House district, SBOE district, etc.).
 
-STEP 2 — Find the candidates. The screenshots may NOT list candidates. For each office, USE WEB SEARCH to find the candidates running in the CURRENT UPCOMING election for that exact office and district (e.g. search "2026 general election candidates Texas House District 102" or "Dallas City Council District 10 2026 candidates"). Search for each office as needed.
+STEP 2 — Add the STATEWIDE races the voter will also vote on. The "Show Districts" view usually lists only DISTRICT-based offices and leaves out statewide offices that EVERYONE in the state votes on. Using the voter's state, ADD the standard statewide offices on the CURRENT upcoming general-election ballot for that state. For Texas in a midterm year this typically includes: U.S. Senator (if up this cycle), Governor, Lieutenant Governor, Attorney General, Comptroller, Land Commissioner, Agriculture Commissioner, Railroad Commissioner, and statewide judicial seats (Texas Supreme Court / Court of Criminal Appeals) that are up. Only add offices that are genuinely on the ballot this cycle — use web search to confirm which statewide seats are up if unsure. Do NOT invent offices that aren't actually up for election.
 
-CLEAN UP OFFICE NAMES — translate raw database labels into clean, plain-English names. Strip year prefixes (like "2022"), internal codes (like "PLANE2106"), and jargon ("SMD", "Upper/Lower House District"). Keep the district number in parentheses. Examples:
+STEP 3 — Find the candidates. USE WEB SEARCH to find the candidates running in the CURRENT upcoming election for each office and district (e.g. "2026 Texas Governor candidates", "2026 Texas House District 102 candidates"). Search per office as needed.
+
+CLEAN UP OFFICE NAMES — translate raw database labels into clean, plain-English names. Strip year prefixes ("2022"), internal codes ("PLANE2106"), and jargon ("SMD", "Upper/Lower House District"). Keep the district number in parentheses. Examples:
 - "2022 ISD Richardson SMD 4" -> "Richardson ISD School Board (District 4)"
 - "State Upper House District - Senate District 16" -> "Texas State Senator (District 16)"
 - "PLANE2106 - SBOE District 9" -> "State Board of Education (District 9)"
 - "US Representative District 32" -> "U.S. Representative (District 32)"
 
 CANDIDATE RULES (accuracy is critical):
-- Only list candidates you actually found in a reliable web search result (official election sites, Ballotpedia, Vote411, county elections offices, reputable news). 
+- Only list candidates you actually found in a reliable web search result (official election sites, Ballotpedia, Vote411, county elections offices, reputable news).
 - Transcribe names and parties exactly as sources report them. Never guess or fabricate.
-- If you cannot confidently find candidates for an office, return an EMPTY candidates array for it — do NOT make up names. It is fine to leave some empty.
+- If you cannot confidently find candidates for an office, return an EMPTY candidates array for it. It is fine to leave some empty.
 - NEVER say who to vote for, rank candidates, or characterize any candidate. Only list them.
 
-For each office also write ONE plain-English sentence on what it controls in daily life, and a daily-life impact score 0-100 (proximity + frequency + control; local offices usually highest, federal a bit lower).
+For each office also write ONE plain-English sentence on what it controls in daily life, and a daily-life impact score 0-100 (proximity + frequency + control; local offices usually highest, federal/statewide a bit lower).
 
 FINAL OUTPUT — after any searching, respond with ONLY valid JSON (no markdown, no commentary, no explanation), exactly this schema:
 {"location":"<city/area if known, else empty>","offices":[{"office":"<clean name>","level":"<federal|state|county|local|courts>","whatItControls":"<one sentence>","impact":<0-100>,"candidates":[{"name":"<exact>","party":"<R|D|Ind|Lib|Grn|other|empty>"}]}]}
@@ -55,9 +57,8 @@ module.exports = async function handler(req, res) {
       body: JSON.stringify({
         // If this model name ever errors, get a current one from https://docs.anthropic.com/en/docs/about-claude/models
         model: "claude-sonnet-4-6",
-        max_tokens: 4500,
-        // Let Claude search the web to find who's running.
-        tools: [{ type: "web_search_20250305", name: "web_search", max_uses: 8 }],
+        max_tokens: 5000,
+        tools: [{ type: "web_search_20250305", name: "web_search", max_uses: 10 }],
         messages: [{ role: "user", content: content }],
       }),
     });
@@ -65,9 +66,7 @@ module.exports = async function handler(req, res) {
     const data = await apiRes.json();
     if (data.error) { res.status(502).json({ error: (data.error && data.error.message) || "The AI service returned an error." }); return; }
 
-    // Grab all text blocks (the final JSON is in the text output, after any tool use).
     let text = (data.content || []).filter(function (c) { return c.type === "text"; }).map(function (c) { return c.text; }).join("").trim();
-    // Pull out the JSON object even if there's stray text around it.
     var start = text.indexOf("{"), end = text.lastIndexOf("}");
     if (start !== -1 && end !== -1 && end > start) { text = text.slice(start, end + 1); }
 
