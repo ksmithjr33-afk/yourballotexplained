@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Ballot, Explained — know who and what you're voting for</title>
+<meta name="description" content="Know exactly who — and what — you're voting for. A free, nonpartisan tool that explains every office on your ballot and how much it affects your daily life.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yourballotexplained.com/">
+<meta property="og:title" content="Your Ballot, Explained">
+<meta property="og:description" content="Know exactly who — and what — you're voting for. Every office on your ballot, in plain English. Nonpartisan and free.">
+<meta property="og:image" content="https://yourballotexplained.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Your Ballot, Explained">
+<meta name="twitter:description" content="Know exactly who — and what — you're voting for. Every office on your ballot, in plain English. Nonpartisan and free.">
+<meta name="twitter:image" content="https://yourballotexplained.com/og-image.png">
+<style>
+  :root{
+    --navy:#14213A; --navy2:#1E3157; --blue:#2563C9; --coral:#F0503F;
+    --ink:#1B2536; --muted:#5B6472; --line:#E4E7EC; --light:#F5F7FA;
+    --bluesoft:#E7EEFB; --coralsoft:#FCE6E2; --paper:#FFFFFF; --purple:#6D28D9;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;background:#fff;}
+  a{color:inherit;}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 22px;}
+  .btn{display:inline-block;font-size:15px;font-weight:700;text-decoration:none;padding:13px 24px;border-radius:30px;cursor:pointer;transition:transform .12s,opacity .12s;border:none;}
+  .btn:hover{transform:translateY(-1px);}
+  .btn.coral{background:var(--coral);color:#fff;}
+  .btn.navy{background:var(--navy);color:#fff;}
+  .btn.ghost{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.4);}
+  .btn.ghostd{background:transparent;color:var(--navy);border:1.5px solid var(--line);}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:20;background:rgba(20,33,58,.97);backdrop-filter:blur(6px);color:#fff;}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px;}
+  nav .brand{font-weight:800;font-size:18px;letter-spacing:-.01em;display:flex;align-items:center;gap:9px;}
+  nav .brand .dot{width:12px;height:12px;border-radius:3px;background:var(--coral);}
+  nav .navbtns{display:flex;gap:10px;align-items:center;}
+  nav .navbtns a.link{font-size:14px;font-weight:600;color:#C9D2E1;text-decoration:none;}
+  nav .btn{padding:9px 18px;font-size:14px;}
+
+  /* hero */
+  .hero{background:var(--navy);color:#fff;position:relative;overflow:hidden;padding:64px 0 72px;}
+  .hero .c1{position:absolute;width:360px;height:360px;border-radius:50%;background:rgba(240,80,63,.13);top:-140px;right:-90px;}
+  .hero .c2{position:absolute;width:260px;height:260px;border-radius:50%;background:rgba(37,99,201,.15);bottom:-150px;right:120px;}
+  .hero .wrap{position:relative;max-width:760px;}
+  .badge{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--coral);background:rgba(240,80,63,.15);padding:6px 14px;border-radius:24px;margin-bottom:20px;}
+  .hero h1{font-size:48px;font-weight:800;letter-spacing:-.025em;line-height:1.03;}
+  .hero p.sub{font-size:19px;color:#C9D2E1;margin-top:18px;max-width:620px;line-height:1.45;}
+  .hero .actions{margin-top:30px;display:flex;gap:13px;flex-wrap:wrap;align-items:center;}
+
+  /* section */
+  section{padding:60px 0;}
+  .eyebrow{font-size:12.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--coral);}
+  h2{font-size:32px;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-top:10px;}
+  .lede{font-size:18px;color:var(--muted);margin-top:14px;max-width:680px;line-height:1.5;}
+
+  .mission{background:var(--light);}
+  .mission .big{font-size:23px;line-height:1.5;font-weight:500;max-width:820px;color:#2b2f38;}
+  .mission .big b{color:var(--ink);font-weight:800;}
+
+  /* feature cards */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:36px;}
+  .fcard{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:24px 22px;box-shadow:0 2px 10px rgba(20,22,26,.05);}
+  .fcard .ic{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;}
+  .fcard.a .ic{background:var(--bluesoft);}
+  .fcard.b .ic{background:var(--coralsoft);}
+  .fcard.c .ic{background:#E9ECF3;}
+  .fcard h3{font-size:18px;font-weight:800;}
+  .fcard p{font-size:14.5px;color:var(--muted);margin-top:8px;line-height:1.5;}
+  .fcard .tag{display:inline-block;font-size:11px;font-weight:700;color:var(--muted);background:var(--light);border:1px solid var(--line);border-radius:6px;padding:2px 8px;margin-top:11px;}
+
+  /* CTA band */
+  .band{background:var(--navy);color:#fff;text-align:center;}
+  .band h2{color:#fff;}
+  .band p{color:#C9D2E1;font-size:17px;margin-top:12px;}
+  .band .btn{margin-top:24px;}
+
+  /* about */
+  .about .row{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;}
+  .about .disc{background:#FFF8EC;border:1px solid #EAD9B0;border-radius:12px;padding:18px 20px;font-size:14px;color:#5c4a1f;}
+  .about .disc b{color:var(--ink);}
+  .about p{font-size:16px;color:#33363B;margin-top:14px;line-height:1.55;}
+
+  /* support */
+  .support{background:var(--light);text-align:center;}
+  .support .box{max-width:640px;margin:0 auto;}
+  .support p{font-size:17px;color:#33363B;margin-top:14px;line-height:1.55;}
+  .support .fine{font-size:13px;color:var(--muted);margin-top:16px;}
+
+  /* follow */
+  .follow{text-align:center;}
+  .follow .socials{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:26px;}
+  .follow .socials a{font-size:15px;font-weight:700;text-decoration:none;color:var(--navy);border:1.5px solid var(--line);border-radius:30px;padding:11px 22px;}
+  .follow .socials a:hover{border-color:var(--navy);}
+
+  .guide .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:30px;}
+  .guide .stepcard{display:flex;gap:14px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px;box-shadow:0 2px 10px rgba(20,22,26,.05);}
+  .guide .sn{width:34px;height:34px;border-radius:50%;background:var(--coral);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .guide .stepcard b{font-size:15.5px;}
+  .guide .stepcard p{font-size:13px;color:var(--muted);margin-top:5px;line-height:1.4;}
+  .guide .steplink{display:inline-block;margin-top:8px;font-size:13px;font-weight:700;color:var(--blue);text-decoration:none;}
+  .tiers{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:26px;}
+  .tier{border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;}
+  .tier.paid{border:2px solid var(--coral);background:#FFF7F5;}
+  .tier .th{font-weight:800;font-size:19px;color:var(--ink);}
+  .tier .th span{color:var(--muted);font-weight:500;font-size:13.5px;display:block;margin-top:2px;}
+  .tier p{font-size:14px;color:#33363B;margin:10px 0 16px;flex:1;line-height:1.5;}
+  .tier .btn{align-self:flex-start;}
+  .formwrap{margin-top:30px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:24px;box-shadow:0 2px 10px rgba(20,22,26,.05);}
+  .formhd{font-size:19px;font-weight:800;color:var(--ink);}
+  .formsub{font-size:13.5px;color:var(--muted);margin:6px 0 16px;line-height:1.4;}
+  .tipbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:22px;background:var(--light);border:1px solid var(--line);border-radius:12px;padding:16px 20px;}
+  .tipbar span{font-size:14px;color:#33363B;font-weight:600;}
+  .formsub a,.gdisc a{color:var(--blue);font-weight:700;text-decoration:none;}
+  .formsub a:hover,.gdisc a:hover{text-decoration:underline;}
+  .gdisc{font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.55;}
+  .gdisc b{color:var(--ink);}
+  @media (max-width:760px){.guide .steps{grid-template-columns:1fr;}.tiers{grid-template-columns:1fr;}}
+  footer{background:var(--navy);color:#9DA9BF;padding:40px 0 34px;font-size:13.5px;}
+  footer .wrap{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;}
+  footer b{color:#fff;}
+  footer a{color:#C9D2E1;text-decoration:none;}
+  footer a:hover{text-decoration:underline;}
+  footer .disclaimer{max-width:520px;line-height:1.5;}
+  footer .flinks{display:flex;flex-direction:column;gap:8px;}
+  footer .src{width:100%;font-size:11px;color:#7f8aa0;margin-top:26px;border-top:1px solid rgba(255,255,255,.1);padding-top:18px;line-height:1.5;font-style:italic;}
+
+  @media (max-width:760px){
+    .hero{padding:48px 0 54px;}
+    .hero h1{font-size:34px;}
+    .hero p.sub{font-size:17px;}
+    h2{font-size:26px;}
+    .cards{grid-template-columns:1fr;}
+    .about .row{grid-template-columns:1fr;gap:22px;}
+    nav .navbtns a.link{display:none;}
+    section{padding:46px 0;}
+  }
+
+  /* ===== AI generator ===== */
+  .gsteps{font-size:13.5px;color:var(--muted);margin-bottom:16px;line-height:1.5;}
+  .gsteps b{color:var(--ink);}
+  .gsteps a{color:var(--blue);font-weight:700;}
+  #uploader{margin-top:22px;}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:24px;box-shadow:0 2px 10px rgba(20,22,26,.05);}
+  .drop{border:2px dashed #C4CBD6;border-radius:12px;background:#FBFCFD;padding:24px 18px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s;}
+  .drop:hover{border-color:var(--coral);background:#FFF7F5;}
+  .drop .ic{font-size:30px;}
+  .drop .t{font-weight:700;font-size:15px;margin-top:6px;color:var(--ink);}
+  .drop .s{font-size:12.5px;color:var(--muted);margin-top:3px;}
+  .thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:10px;margin-top:14px;}
+  .thumb{position:relative;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;}
+  .thumb img{width:100%;height:90px;object-fit:cover;display:block;}
+  .thumb .rm{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:rgba(20,33,58,.85);color:#fff;border:none;font-size:14px;line-height:1;cursor:pointer;}
+  .thumb .num{position:absolute;bottom:4px;left:4px;background:rgba(20,33,58,.85);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;}
+  .addmore{margin-top:12px;text-align:center;}
+  .addmore button{background:var(--light);border:1px solid var(--line);border-radius:22px;padding:8px 16px;font-size:13px;font-weight:700;color:var(--navy);cursor:pointer;}
+  .btnrow{margin-top:18px;}
+  .gen{display:block;width:100%;text-align:center;background:var(--coral);color:#fff;font-size:16px;font-weight:700;border:none;border-radius:12px;padding:15px;cursor:pointer;}
+  .gen:disabled{opacity:.5;cursor:not-allowed;}
+  .vote411{text-align:center;margin-top:12px;font-size:13px;}
+  .loading{text-align:center;padding:30px 0;color:var(--muted);display:none;}
+  .spin{width:34px;height:34px;border:4px solid #E4E7EC;border-top-color:var(--coral);border-radius:50%;margin:0 auto 12px;animation:sp .8s linear infinite;}
+  @keyframes sp{to{transform:rotate(360deg);}}
+  .errbox{display:none;background:#FFF1F0;border:1px solid #F3C7C2;color:#8A2A20;border-radius:12px;padding:16px 18px;font-size:14px;margin-top:16px;}
+  #result{display:none;}
+  .rhead{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:4px;}
+  .rhead h2{font-size:22px;font-weight:800;color:var(--ink);border:none;}
+  .rloc{font-size:13px;color:var(--muted);}
+  .printbtn{background:var(--navy);color:#fff;border:none;border-radius:22px;padding:9px 18px;font-size:13px;font-weight:700;cursor:pointer;}
+  .disc{background:#FFF8EC;border:1px solid #EAD9B0;border-radius:10px;padding:12px 15px;font-size:12.5px;color:#5c4a1f;margin:14px 0;}
+  .disc b{color:var(--ink);}
+  .rankhd,.listhd{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:18px 0 9px;}
+  .rrow{display:grid;grid-template-columns:20px 1fr 150px 40px;gap:10px;align-items:center;font-size:14.5px;padding:4px 0;}
+  .rn{font-weight:800;color:#9AA3B0;font-size:12px;}
+  .rl{font-weight:600;}
+  .rt{height:9px;background:#F1F2F4;border-radius:5px;overflow:hidden;}
+  .rt i{display:block;height:100%;background:var(--purple);}
+  .rnum{font-weight:800;text-align:right;}
+  .off{border:1px solid var(--line);border-radius:11px;padding:15px 16px;margin-bottom:10px;}
+  .off .top{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:7px;}
+  .lvl{font-size:9px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:3px 7px;border-radius:5px;}
+  .lvl.federal{background:#E4EAF3;color:#1E3A5F;}.lvl.state{background:#F6ECD9;color:#8A5A05;}.lvl.county{background:#E1F0E5;color:#166534;}.lvl.local{background:#EEE7FB;color:#6D28D9;}.lvl.courts{background:#FCE6E2;color:#9B2C22;}
+  .off .on{font-weight:700;font-size:15.5px;color:var(--ink);flex:1;min-width:120px;}
+  .off .imp{font-weight:800;font-size:16px;color:var(--ink);}
+  .off .does{font-size:13.5px;color:#33363B;}
+  .off .cands{margin-top:9px;display:flex;flex-wrap:wrap;gap:7px;}
+  .cchip{font-size:12.5px;background:var(--light);border:1px solid var(--line);border-radius:16px;padding:4px 11px;}
+  .cchip b{font-weight:800;}
+  .cchip .R{color:#B4232A;}.cchip .D{color:#1E56C9;}.cchip .Ind,.cchip .Lib,.cchip .Grn,.cchip .other{color:var(--muted);}
+  .nocand{margin-top:8px;font-size:12.5px;color:var(--muted);font-style:italic;}
+  .whyfree{background:var(--light);border:1px solid var(--line);border-radius:14px;padding:22px;margin-top:24px;}
+  .whyfree p{font-size:14.5px;color:#33363B;line-height:1.55;}
+  .whyfree p b{color:var(--ink);}
+  .whyfree-btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;}
+  .howto{background:var(--bluesoft);border:1px solid #CBDBF7;border-radius:14px;padding:22px 24px;margin-top:24px;}
+  .howto-h{font-size:17px;font-weight:800;color:var(--ink);margin-bottom:14px;line-height:1.25;}
+  .howto-h span{font-weight:600;color:var(--muted);font-size:14px;}
+  .howto-list{margin:0 0 16px 0;padding-left:22px;}
+  .howto-list li{font-size:14.5px;color:#33363B;margin-bottom:9px;line-height:1.5;}
+  .howto-list li b{color:var(--ink);}
+  .howto-list a{color:var(--blue);font-weight:700;}
+  .stepstrip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:6px 0 16px;}
+  .ss{background:#fff;border:1px solid #CBDBF7;border-radius:11px;padding:15px 12px 13px;text-align:center;position:relative;}
+  .ssnum{position:absolute;top:-9px;left:50%;transform:translateX(-50%);width:22px;height:22px;border-radius:50%;background:var(--coral);color:#fff;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;}
+  .ssic{font-size:26px;margin-top:6px;line-height:1;}
+  .sstext{font-size:12px;color:#33363B;margin-top:7px;line-height:1.35;}
+  .sstext b{color:var(--ink);}
+  .sstext a{color:var(--blue);text-decoration:underline;}
+  @media(max-width:640px){.stepstrip{grid-template-columns:repeat(2,1fr);}}
+  .faq .qa{border:1px solid var(--line);border-radius:12px;margin-top:12px;background:var(--paper);overflow:hidden;}
+  .faq summary{font-weight:700;font-size:15.5px;color:var(--ink);padding:16px 44px 16px 18px;cursor:pointer;list-style:none;position:relative;}
+  .faq summary::-webkit-details-marker{display:none;}
+  .faq summary::after{content:'+';position:absolute;right:18px;top:13px;font-size:22px;color:var(--coral);font-weight:700;}
+  .faq details[open] summary::after{content:'\2013';}
+  .faq .qa p{padding:0 18px 16px;font-size:14px;color:#33363B;line-height:1.55;margin:0;}
+  .faq .qa a{color:var(--blue);font-weight:700;}
+  .comeback{margin-top:14px;background:var(--coralsoft);border:1px solid #F3C7C2;border-radius:11px;padding:13px 16px;font-size:13.5px;color:#7a2318;line-height:1.5;}
+  .comeback b{color:#5c1a12;}
+  .donate-nudge{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;background:#EAF3EC;border:1px solid #BFDDC7;border-radius:12px;padding:14px 18px;margin-top:20px;}
+  .donate-nudge span{font-size:13.5px;color:#28513a;line-height:1.5;flex:1;min-width:220px;}
+  .donate-nudge b{color:#1c3a29;}
+  .donate-nudge .btn{flex:0 0 auto;}
+  .emailcap{background:var(--bluesoft);border:1px solid #CBDBF7;border-radius:14px;padding:22px 24px;margin-top:20px;}
+  .ec-h{font-size:18px;font-weight:800;color:var(--ink);}
+  .ec-sub{font-size:13.5px;color:#33363B;margin:6px 0 14px;line-height:1.5;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span> Your Ballot, Explained</div>
+    <div class="navbtns">
+      <a class="link" href="#guide">Get a guide</a>
+      <a class="link" href="#how">How it works</a>
+      <a class="link" href="https://ko-fi.com/ksmithcredit" target="_blank" rel="noopener">&#128181; Donate</a>
+      <a class="btn coral" href="#guide">Get my ballot guide →</a>
+    </div>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="c1"></div><div class="c2"></div>
+  <div class="wrap">
+    <span class="badge">Nonpartisan · Free · Fact-based</span>
+    <h1>Know exactly who — and what — you're voting for.</h1>
+    <p class="sub">Every office on your ballot, in plain English: what it actually controls, how much it touches your daily life, and who's running. No spin. No party line. You decide.</p>
+    <div class="actions">
+      <a class="btn coral" href="#guide">Get my ballot guide →</a>
+      <a class="btn ghost" href="https://ko-fi.com/ksmithcredit" target="_blank" rel="noopener">&#128181; Donate →</a>
+    </div>
+  </div>
+</div>
+
+<section class="guide" id="guide">
+  <div class="wrap">
+    <span class="eyebrow">Free &middot; instant &middot; AI-generated</span>
+    <h2>Get your exact ballot explained &mdash; free.</h2>
+    <p class="lede">Upload a screenshot of your Vote411 ballot and get a plain-English guide to every race on it &mdash; what each office controls, how much it affects your daily life, and who's running. In seconds.</p>
+
+    <div class="howto">
+      <h3 class="howto-h">First, grab your ballot from Vote411 <span>(about 2 minutes)</span></h3>
+      <div class="stepstrip">
+        <div class="ss"><div class="ssnum">1</div><div class="ssic">&#128499;&#65039;</div><div class="sstext">On <a href="https://www.vote411.org" target="_blank" rel="noopener"><b>Vote411.org</b></a>, click <b>&ldquo;See What's On Your Ballot&rdquo;</b></div></div>
+        <div class="ss"><div class="ssnum">2</div><div class="ssic">&#127968;</div><div class="sstext"><b>Scroll down</b>, enter your <b>home address</b> &amp; hit <b>Show Districts</b></div></div>
+        <div class="ss"><div class="ssnum">3</div><div class="ssic">&#128247;</div><div class="sstext"><b>Screenshot</b> your districts &mdash; grab a few if it's long</div></div>
+        <div class="ss"><div class="ssnum">4</div><div class="ssic">&#11014;&#65039;</div><div class="sstext"><b>Come right back</b> &amp; upload below</div></div>
+      </div>
+      <a class="btn coral" href="https://www.vote411.org" target="_blank" rel="noopener">Open Vote411 to show your districts &rarr;</a>
+      <p class="comeback">&#9888;&#65039; <b>This opens Vote411 in a new tab.</b> The moment you've screenshotted your districts, <b>come right back to THIS tab</b> and upload below &mdash; that's where your guide gets made. &#128071;</p>
+    </div>
+
+    <div class="donate-nudge">
+      <span>&#128181; <b>Keep this free for everyone.</b> Every guide costs real money to generate. If you're able, a donation of any amount helps keep this tool free and running for the whole community &mdash; thank you.</span>
+      <a class="btn ghostd" href="https://ko-fi.com/ksmithcredit" target="_blank" rel="noopener">Donate</a>
+    </div>
+
+    <div class="card" id="uploader">
+      <p class="gsteps"><b>Got your Vote411 screenshots?</b> Drop them below &mdash; add one for each part of your ballot so nothing gets left off.</p>
+      <label class="drop" id="drop">
+        <div class="ic">&#128228;</div>
+        <div class="t">Tap to upload your ballot screenshot(s)</div>
+        <div class="s">PNG or JPG &middot; add one for each part of your ballot &middot; we don't store them</div>
+        <input type="file" id="file" accept="image/png,image/jpeg" multiple style="display:none">
+      </label>
+      <div class="thumbs" id="thumbs"></div>
+      <div class="addmore" id="addmore" style="display:none"><button type="button" id="addmoreBtn">+ Add another screenshot</button></div>
+      <div class="btnrow"><button class="gen" id="gen" disabled>Generate my guide</button></div>
+      <div class="vote411">Don't have it yet? <a href="https://www.vote411.org" target="_blank" rel="noopener">Look up your ballot on Vote411 &rarr;</a></div>
+    </div>
+
+    <div class="loading" id="loading"><div class="spin"></div>Reading your ballot and looking up who's running&hellip;<br><span style="font-size:12px;">This can take up to a minute &mdash; <b>please keep this tab open</b> while it works.</span></div>
+    <div class="errbox" id="errbox"></div>
+    <div id="result"></div>
+
+    <div class="emailcap" id="emailcap" style="display:none">
+      <h3 class="ec-h">&#128235; Want a reminder before Election Day?</h3>
+      <p class="ec-sub">Drop your email and I'll send you a heads-up when it's time to vote &mdash; plus the occasional civic update that actually matters. Totally optional, no spam, unsubscribe anytime.</p>
+      <iframe data-tally-src="https://tally.so/embed/MeqB9A?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" loading="lazy" width="100%" height="200" frameborder="0" marginheight="0" marginwidth="0" title="Get election reminders"></iframe>
+    </div>
+
+    <div class="whyfree">
+      <p><b>Why is this free?</b> Because everyone deserves to understand who and what they're voting for &mdash; not just the people with time to research it. But the AI that reads your ballot and builds your guide costs me real money for every single guide, so if this helped you, a donation genuinely keeps it running and free for the next person. No pressure &mdash; your guide is yours either way.</p>
+      <div class="whyfree-btns">
+        <a class="btn coral" href="https://ko-fi.com/ksmithcredit" target="_blank" rel="noopener">&#128181; Donate</a>
+        <a class="btn ghostd" href="https://ko-fi.com/s/202ba2d5d9" target="_blank" rel="noopener">Want it hand-reviewed? $15 &rarr;</a>
+      </div>
+    </div>
+
+    <p class="gdisc"><b>Nonpartisan, always:</b> your guide explains what each office does and lists your real candidates &mdash; it never tells you who to vote for. It's read automatically from your screenshots and can occasionally misread a name, so always confirm your exact ballot at Vote411.org.</p>
+  </div>
+</section>
+
+<section class="mission" id="how">
+  <div class="wrap">
+    <span class="eyebrow">Why this exists</span>
+    <p class="big" style="margin-top:14px;">Most of us walk into the booth knowing the race at the top — and guessing at everything else. But the offices you've never heard of — <b>your county commissioner, your state rep, the railroad commissioner</b> — often hit your rent, your roads, your schools, and your paycheck harder than the ones on TV. And the representatives you elect are the ones who go to <b>the House and the Senate</b> — the people who decide which bills pass and become the laws you live under. <b>This makes all of it make sense — so a confused voter becomes a confident one.</b></p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <span class="eyebrow">What you get</span>
+    <h2>The whole ballot, finally readable.</h2>
+    <div class="cards">
+      <div class="fcard a">
+        <div class="ic">🏛️</div>
+        <h3>Every office, explained</h3>
+        <p>What a comptroller, a county judge, or a railroad commissioner actually does — in a sentence you'll remember, not legalese.</p>
+      </div>
+      <div class="fcard b">
+        <div class="ic">📊</div>
+        <h3>A daily-life impact score</h3>
+        <p>A 0–100 read on how much each seat actually affects your life — scored on how close it hits, how often you feel it, and how much control one person holds.</p>
+        <span class="tag">A framework, not a verdict</span>
+      </div>
+      <div class="fcard c">
+        <div class="ic">⚖️</div>
+        <h3>Who's running — fairly</h3>
+        <p>Every candidate, shown the exact same way, with links to read them in their own words. This tool never tells you who to pick.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <span class="eyebrow">Two minutes, zero jargon</span>
+    <h2>See what's actually on your ballot.</h2>
+    <p>No sign-up. No address stored. Just the facts, laid out clearly.</p>
+    <a class="btn coral" href="#guide">Get my ballot guide →</a>
+  </div>
+</section>
+
+
+
+<section class="faq" id="faq">
+  <div class="wrap">
+    <span class="eyebrow">Good to know</span>
+    <h2>Questions &amp; answers</h2>
+    <details class="qa"><summary>Is it really free?</summary><p>Yes. Your guide is free &mdash; no account, no catch. I just ask for a donation if it helped, because the AI that reads your ballot and builds the guide costs me real money for every one.</p></details>
+    <details class="qa"><summary>How accurate is it?</summary><p>Your races and candidates come from your official Vote411 ballot plus a web search, so it's accurate to those sources. But AI can occasionally misread a name, so always confirm against your official ballot at <a href="https://www.vote411.org" target="_blank" rel="noopener">Vote411.org</a> before you vote.</p></details>
+    <details class="qa"><summary>Do you store my address or data?</summary><p>No. Your screenshots are used only to build your guide and aren't saved anywhere. You never even type your address here &mdash; that happens on Vote411's own site.</p></details>
+    <details class="qa"><summary>Does it tell me who to vote for?</summary><p>Never. It explains what each office does and lists your real candidates &mdash; the choice is 100% yours. It's strictly nonpartisan and always will be.</p></details>
+    <details class="qa"><summary>Why do some races show no candidates yet?</summary><p>For elections that are still months away, candidate lists often aren't published anywhere yet. Those races fill in closer to Election Day &mdash; check back later or grab a fresh screenshot then.</p></details>
+    <details class="qa"><summary>What's the $15 human-reviewed guide?</summary><p>I build that one by hand and verify every race myself, plus add how competitive each race is (which the free AI can't reliably determine). It's for anyone who wants guaranteed accuracy and extra detail.</p></details>
+  </div>
+</section>
+
+<section class="about">
+  <div class="wrap">
+    <span class="eyebrow">Who's behind it</span>
+    <h2>Built to inform — not to persuade.</h2>
+    <div class="row" style="margin-top:26px;">
+      <div>
+        <p>I'm <b>Kenneth Smith</b>. I make money and civics make sense for regular people — because information you can't understand isn't really yours. This tool is a nonpartisan project: it explains your ballot and rates what each office <i>does</i>, but it never endorses a candidate or a party. The goal is simple — a voter who actually knows what they're voting on.</p>
+      </div>
+      <div class="disc">
+        <b>Full transparency:</b> I also do separate political and volunteer work. This tool is walled off from it — every candidate is presented identically, the impact score rates the office (not the people), and nothing here tells you how to vote. Always confirm your specific ballot at Vote411.org.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="support" id="support">
+  <div class="wrap">
+    <div class="box">
+      <span class="eyebrow">Keep it free</span>
+      <h2>Free forever. Powered by people like you.</h2>
+      <p>This tool costs nothing to use and always will. If it helped you feel less lost this election, you can chip in to help keep it accurate and updated — every cycle, every race, every office.</p>
+      <p><a class="btn coral" href="https://ko-fi.com/ksmithcredit" target="_blank" rel="noopener">☕ Support the tool</a></p>
+      <p class="fine">It's a donation, not a tax write-off — donations aren't tax-deductible. They just keep the lights on and the data current.</p>
+    </div>
+  </div>
+</section>
+
+<section class="follow">
+  <div class="wrap">
+    <span class="eyebrow">Stay in the loop</span>
+    <h2>Follow the breakdowns.</h2>
+    <p class="lede" style="margin:14px auto 0;">Plain-English takes on what your government is actually doing — the money, the votes, and how it lands on you. New every week.</p>
+    <div class="socials">
+      <a href="https://www.threads.com/@ksmithcredit" target="_blank" rel="noopener">Follow me on Threads → @ksmithcredit</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="disclaimer">
+      <b>Your Ballot, Explained</b> — a nonpartisan civic education tool.<br>
+      It does not endorse candidates or parties, and does not tell you how to vote. Districts split by street and candidates change — always confirm your exact ballot and voter registration at <a href="https://www.vote411.org" target="_blank" rel="noopener">Vote411.org</a>.
+    </div>
+    <div class="flinks">
+      <a href="#guide">→ Get my ballot guide</a>
+      <a href="#how">→ How it works</a>
+      <a href="#support">→ Support the tool</a>
+      <a href="https://www.vote411.org" target="_blank" rel="noopener">→ Verify at Vote411</a>
+    </div>
+    <div class="src">Sources: office roles and ballot data per the Texas Secretary of State, Dallas County Elections, and Ballotpedia; impact scores are an interpretive framework by the author. © 2026 Your Ballot, Explained · Made by Kenneth Smith.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var fileEl=document.getElementById('file'), drop=document.getElementById('drop'), thumbsEl=document.getElementById('thumbs'),
+      addmore=document.getElementById('addmore'), addmoreBtn=document.getElementById('addmoreBtn'),
+      genBtn=document.getElementById('gen'), loading=document.getElementById('loading'), errbox=document.getElementById('errbox'),
+      result=document.getElementById('result');
+  if(!fileEl) return;
+  var MAX_IMAGES=8; var imgs=[];
+  addmoreBtn.addEventListener('click', function(){fileEl.click();});
+  fileEl.addEventListener('change', function(e){
+    var files=Array.prototype.slice.call(e.target.files||[]);
+    files.forEach(function(f){
+      if(imgs.length>=MAX_IMAGES) return;
+      var reader=new FileReader();
+      reader.onload=function(ev){
+        var img=new Image();
+        img.onload=function(){
+          var max=1500, scale=Math.min(1,max/img.width);
+          var cv=document.createElement('canvas');
+          cv.width=Math.round(img.width*scale); cv.height=Math.round(img.height*scale);
+          cv.getContext('2d').drawImage(img,0,0,cv.width,cv.height);
+          var dataUrl=cv.toDataURL('image/jpeg',0.85);
+          imgs.push({data:dataUrl.split(',')[1], mediaType:'image/jpeg', url:dataUrl});
+          renderThumbs();
+        };
+        img.src=ev.target.result;
+      };
+      reader.readAsDataURL(f);
+    });
+    fileEl.value='';
+  });
+  function renderThumbs(){
+    thumbsEl.innerHTML='';
+    imgs.forEach(function(im,i){
+      var d=document.createElement('div'); d.className='thumb';
+      d.innerHTML='<img src="'+im.url+'" alt="ballot screenshot '+(i+1)+'"><span class="num">'+(i+1)+'</span><button class="rm" title="Remove">&times;</button>';
+      d.querySelector('.rm').onclick=function(ev){ev.preventDefault();imgs.splice(i,1);renderThumbs();};
+      thumbsEl.appendChild(d);
+    });
+    var has=imgs.length>0;
+    addmore.style.display = has && imgs.length<MAX_IMAGES ? 'block':'none';
+    drop.style.display = has ? 'none':'block';
+    genBtn.disabled=!has;
+    genBtn.textContent = imgs.length>1 ? ('Generate my guide ('+imgs.length+' images)') : 'Generate my guide';
+  }
+  genBtn.addEventListener('click', function(){
+    if(!imgs.length) return;
+    // Free-use limit — keeps costs sane. The real backstop is your Anthropic spend cap.
+    var RL_LIMIT=3;
+    var rlToday=new Date().toISOString().slice(0,10), rlRec;
+    try{ rlRec=JSON.parse(localStorage.getItem('ybe_rl')||'{}'); }catch(e){ rlRec={}; }
+    if(rlRec.date!==rlToday){ rlRec={date:rlToday,count:0}; }
+    if(rlRec.count>=RL_LIMIT){
+      errbox.textContent="You've reached today's limit of "+RL_LIMIT+" free guides. This keeps the tool free for everyone — please check back tomorrow. (Want it hand-reviewed with no limit? The $15 guide is always available below.)";
+      errbox.style.display='block'; return;
+    }
+    rlRec.count++; try{ localStorage.setItem('ybe_rl',JSON.stringify(rlRec)); }catch(e){}
+    errbox.style.display='none'; result.style.display='none';
+    loading.style.display='block'; genBtn.disabled=true;
+    var ctrl=(typeof AbortController!=='undefined')?new AbortController():null, timedOut=false;
+    var to=setTimeout(function(){ timedOut=true; if(ctrl) ctrl.abort(); }, 110000);
+    var opts={method:'POST',headers:{'content-type':'application/json'},
+      body:JSON.stringify({images:imgs.map(function(i){return {data:i.data,mediaType:i.mediaType};})})};
+    if(ctrl) opts.signal=ctrl.signal;
+    fetch('/api/generate',opts)
+      .then(function(r){return r.json();})
+      .then(function(data){
+        clearTimeout(to); loading.style.display='none'; genBtn.disabled=false;
+        if(data.error){ errbox.textContent=data.error; errbox.style.display='block'; return; }
+        render(data);
+      })
+      .catch(function(){
+        clearTimeout(to); loading.style.display='none'; genBtn.disabled=false;
+        errbox.textContent = timedOut
+          ? "That took too long \u2014 it usually means the tab went to the background. Please keep this tab open and tap Generate again."
+          : "Something went wrong. Please keep this tab open and try again.";
+        errbox.style.display='block';
+      });
+  });
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function render(data){
+    var offices=(data.offices||[]).slice().sort(function(a,b){return (b.impact||0)-(a.impact||0);});
+    if(!offices.length){ errbox.textContent="Couldn't find any races in those screenshots. Try clearer, fuller ones."; errbox.style.display='block'; return; }
+    var loc=data.location?(' &middot; '+esc(data.location)):'';
+    var html='<div class="card">'+
+      '<div class="rhead"><div><h2>Your Ballot, Explained</h2><div class="rloc">Auto-generated from your screenshot'+loc+'</div></div>'+
+        '<button class="printbtn" onclick="window.print()">&#128424; Save / Print</button></div>'+
+      '<div class="disc"><b>Verify before you rely on it:</b> this was read automatically from your screenshots and can occasionally misread a name. Always confirm the exact races and candidates on your official ballot at <a href="https://www.vote411.org" target="_blank" rel="noopener">Vote411.org</a>. Impact scores are an interpretive framework, not official data, and this never tells you who to vote for.</div>';
+    html+='<div class="rankhd">Biggest impact on your daily life</div>';
+    offices.slice(0,6).forEach(function(o,i){
+      html+='<div class="rrow"><span class="rn">'+(i+1)+'</span><span class="rl">'+esc(o.office)+'</span><span class="rt"><i style="width:'+Math.max(0,Math.min(100,o.impact||0))+'%"></i></span><span class="rnum">'+(o.impact||0)+'</span></div>';
+    });
+    html+='<div class="listhd">Every office on your ballot</div>';
+    offices.forEach(function(o){
+      var lvl=(o.level||'').toLowerCase();
+      var cands=(o.candidates||[]).map(function(c){
+        var pp=(c.party||'').trim(); var cls=['R','D','Ind','Lib','Grn'].indexOf(pp)>=0?pp:'other';
+        return '<span class="cchip">'+esc(c.name)+(pp?' <b class="'+cls+'">'+esc(pp)+'</b>':'')+'</span>';
+      }).join('');
+      html+='<div class="off"><div class="top">'+(lvl?'<span class="lvl '+lvl+'">'+esc(lvl)+'</span>':'')+'<span class="on">'+esc(o.office)+'</span><span class="imp">'+(o.impact||0)+'</span></div>'+
+        '<div class="does">'+esc(o.whatItControls)+'</div>'+
+        (cands?'<div class="cands">'+cands+'</div>':'<div class="nocand">Candidates not listed yet &mdash; check Vote411 closer to Election Day.</div>')+'</div>';
+    });
+    html+='</div>';
+    result.innerHTML=html; result.style.display='block';
+    var ec=document.getElementById('emailcap'); if(ec){ ec.style.display='block'; if(typeof Tally!=='undefined'){ try{ Tally.loadEmbeds(); }catch(e){} } }
+    result.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+})();
+</script>
+<script>var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(null==d.querySelector('script[src="'+w+'"]')){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}</script>
+</body>
+</html>
