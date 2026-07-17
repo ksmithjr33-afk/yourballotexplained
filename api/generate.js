@@ -45,7 +45,7 @@ module.exports = async function handler(req, res) {
       },
       body: JSON.stringify({
         // If this model name ever errors, get a current one from https://docs.anthropic.com/en/docs/about-claude/models
-        model: "claude-sonnet-4-20250514",
+        model: "claude-sonnet-4-6",
         max_tokens: 4000,
         messages: [{ role: "user", content: content }],
       }),
